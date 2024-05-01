@@ -2,6 +2,8 @@ import express from 'express';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import http from 'http';
+import { connect } from './config.js';
+import chatModel from './chat.schema.js';
 
 
 const app = express();
@@ -31,6 +33,14 @@ io.on('connection', (socket)=>{
             username: socket.username,
             message: message
         }
+
+        // to call database
+        const newChat = new chatModel({
+            username: socket.username,
+            message: message,
+            timestamp: new Date()
+        });
+        newChat.save();
         // broadcast this message to all clients
         socket.broadcast.emit('broadcast_message', userMessage);
     })
@@ -41,4 +51,5 @@ io.on('connection', (socket)=>{
 
 server.listen(8080, ()=>{
     console.log("server is listining on port 8080");
-})
+    connect();
+});
