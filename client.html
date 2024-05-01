@@ -46,6 +46,15 @@
             }
         });
 
+        // display messages on UI
+        socket.on('load_messages', (messages)=>{
+            messages.forEach(message => {
+                const messageElement = document.createElement("div");
+                messageElement.innerText = new Date(message.timestamp).toDateString() + " - " + message.username + ": " + message.message;
+                messageList.appendChild(messageElement);
+            });
+        })
+
         // listen for broadcast message and add it to the list
         socket.on('broadcast_message', (userMessage)=>{
             const messageElement = document.createElement("div");
