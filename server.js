@@ -57,7 +57,7 @@ io.on('connection', (socket)=>{
     })
 });
 
-server.listen(8080, ()=>{
+server.listen(9090, ()=>{
     console.log("server is listining on port 8080");
     connect();
 });
